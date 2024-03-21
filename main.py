@@ -43,6 +43,7 @@ def main(key_words, qnty):
     enter_pass_txt.click()
     enter_pass_txt.clear()
     enter_pass_txt.click()
+    time.sleep(2)
     enter_pass_txt.send_keys('Indiamart@trio')
 
     submit_btn = driver.find_element(By.XPATH, '//*[@id="signWP"]')
@@ -110,6 +111,14 @@ def main(key_words, qnty):
                 try:
                     send_reply = driver.find_element(By.XPATH, "//*[text()='Send Reply']")
                     send_reply.click()
+                    try:
+                        # outer_popup = WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.ID, '//*[@id="sourcediv11"]')))
+                        element_or_outer_popup = driver.find_element(By.XPATH, '//*[@id="cls_btn"]')
+                        element_or_outer_popup.click()
+                        print('closed pop up')
+                        pass
+                    except:
+                        pass
                 except:
                     send_reply = None
                 if send_reply:
