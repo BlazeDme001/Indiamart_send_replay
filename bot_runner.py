@@ -3,8 +3,8 @@ from main import run_bot
 import time
 
 if __name__ == '__main__':
-    keywords_list = ['door panic bar', 'Emergency exit doors']
-    quantities_list = [5, 2]
+    keywords_list = ['fire resistant doors', 'lead lined doors']
+    quantities_list = [10, 2]
 
     processes = []
     for keywords, quantities in zip(keywords_list, quantities_list):
