@@ -97,41 +97,44 @@ def main(key_words, qnty):
             lead_cur_xpath = f'//*[@id="list{j}"]/div[1]'
             lead_data = driver.find_element(By.XPATH, lead_cur_xpath).text
             leads_xpaths[lead_cur_xpath] = lead_data.split('\n')
-
+        c = 0
         for xpath, lead in leads_xpaths.items():
             if any('Quantity' in item and int(''.join(filter(str.isdigit, item))) >= qnty for item in lead) and\
                     any(any(state.lower() in item.lower() for state in states) for item in lead):
-                cont_xpath = xpath.replace('/div[1]', '')
-                cont_buyer_xpath = f"{cont_xpath}//span[contains(text(),'Contact Buyer Now')]/ancestor::div[1]"
-                contact_buyer = driver.find_element(By.XPATH, cont_buyer_xpath)
-                actions = ActionChains(driver)
-                actions.move_to_element(driver.find_element(By.XPATH, cont_buyer_xpath)).perform()
-                driver.execute_script("window.scrollBy(0, 200);")
-                contact_buyer.click()
-                try:
-                    send_reply = driver.find_element(By.XPATH, "//*[text()='Send Reply']")
-                    send_reply.click()
+                c+=1
+                if (c<16 and key_words == 'fire resistant doors') or (key_words == 'lead lined doors' and c<6):
+                    pass
+                    cont_xpath = xpath.replace('/div[1]', '')
+                    cont_buyer_xpath = f"{cont_xpath}//span[contains(text(),'Contact Buyer Now')]/ancestor::div[1]"
+                    contact_buyer = driver.find_element(By.XPATH, cont_buyer_xpath)
+                    actions = ActionChains(driver)
+                    actions.move_to_element(driver.find_element(By.XPATH, cont_buyer_xpath)).perform()
+                    driver.execute_script("window.scrollBy(0, 200);")
+                    contact_buyer.click()
                     try:
-                        # outer_popup = WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.ID, '//*[@id="sourcediv11"]')))
-                        element_or_outer_popup = driver.find_element(By.XPATH, '//*[@id="cls_btn"]')
-                        element_or_outer_popup.click()
-                        print('closed pop up')
-                        pass
+                        send_reply = driver.find_element(By.XPATH, "//*[text()='Send Reply']")
+                        send_reply.click()
+                        try:
+                            # outer_popup = WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.ID, '//*[@id="sourcediv11"]')))
+                            element_or_outer_popup = driver.find_element(By.XPATH, '//*[@id="cls_btn"]')
+                            element_or_outer_popup.click()
+                            print('closed pop up')
+                            pass
+                        except:
+                            pass
                     except:
-                        pass
-                except:
-                    send_reply = None
-                if send_reply:
-                    time.sleep(10)
-                    try:
-                        popup = WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.ID, "rr_outer")))
-                        element_inside_popup = popup.find_element(By.XPATH, "//div[@id='rr_outer']/div[1]")
-                        element_inside_popup.click()
-                        popup_2 = WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.XPATH, '//*[@id="innerPopup_suggested_BL"]/span')))
-                        element_inside_popup_2 = popup_2.find_element(By.XPATH, '//*[@id="innerPopup_suggested_BL"]/span')
-                        element_inside_popup_2.click()
-                    except:
-                        pass
+                        send_reply = None
+                    if send_reply:
+                        time.sleep(10)
+                        try:
+                            popup = WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.ID, "rr_outer")))
+                            element_inside_popup = popup.find_element(By.XPATH, "//div[@id='rr_outer']/div[1]")
+                            element_inside_popup.click()
+                            popup_2 = WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.XPATH, '//*[@id="innerPopup_suggested_BL"]/span')))
+                            element_inside_popup_2 = popup_2.find_element(By.XPATH, '//*[@id="innerPopup_suggested_BL"]/span')
+                            element_inside_popup_2.click()
+                        except:
+                            pass
 
     except Exception as err:
         print(str(err))
