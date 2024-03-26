@@ -7,6 +7,7 @@ if __name__ == '__main__':
     quantities_list = [30, 5]
 
     while True:
+        print('BOT Start)
         processes = []
         for keywords, quantities in zip(keywords_list, quantities_list):
             process = Process(target=run_bot, args=(keywords, quantities))
@@ -16,4 +17,5 @@ if __name__ == '__main__':
 
         for process in processes:
             process.join()
+        print('BOt Stop. It will start after 2 min')
         time.sleep(120)
