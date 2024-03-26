@@ -21,8 +21,8 @@ prefs = {
 
 def login():
     driver = webdriver.Chrome(options=chrome_options)
-    # driver.get('https://seller.indiamart.com/')
-    driver.get('https://seller.indiamart.com/bltxn/?pref=relevant')
+    driver.get('https://seller.indiamart.com/')
+    # driver.get('https://seller.indiamart.com/bltxn/?pref=relevant')
     user_id = driver.find_element(By.XPATH, '//*[@id="user_sign_in"]')
     user_id.click()
     mobile = driver.find_element(By.XPATH, '//*[@id="mobile"]')
