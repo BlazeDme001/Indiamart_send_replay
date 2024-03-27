@@ -13,9 +13,9 @@ if __name__ == '__main__':
             process = Process(target=run_bot, args=(keywords, quantities))
             processes.append(process)
             process.start()
-            time.sleep(30)
+            time.sleep(15*60)
 
         for process in processes:
             process.join()
         print('BOt Stop. It will start after 2 min')
-        time.sleep(120)
+        time.sleep(15*120)
