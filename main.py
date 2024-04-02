@@ -113,7 +113,7 @@ def main(key_words, qnty):
         for xpath, lead in leads_xpaths.items():
             print(xpath)
             if any('Quantity' in item and int(''.join(filter(str.isdigit, item))) >= qnty for item in lead) and\
-                    any(any(state.lower() in item.lower() for state in states) for item in lead):
+                    any(any(state.lower() in item.lower() for state in states) for item in lead[:4]):
                 logger.info(f'Lead data:\n{lead}')
                 logger.info(f'Quantity in the leads is more than {qnty-1}')
                 c+=1
