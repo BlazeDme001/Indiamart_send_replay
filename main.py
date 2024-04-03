@@ -8,12 +8,11 @@ import time
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+import re
 
-# Configure logging
-logging.basicConfig(filename='selenium_bot.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(filename='indiamart_bot_v2.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-# Add a new logger for Selenium
-logger = logging.getLogger('selenium_bot')
+logger = logging.getLogger('indiamart_bot_v2')
 
 chrome_options = Options()
 chrome_options.add_argument('--no-sandbox')
@@ -24,6 +23,13 @@ chrome_options.add_argument('--disable-dev-shm-usage')
 prefs = {
     'safebrowsing.enabled': True
 }
+
+def extract_max_integer(item):
+    digits = re.findall(r'\d+', item)
+    if digits:
+        return max(map(int, digits))
+    else:
+        return 0
 
 def login():
     logger.info('Opening safebrowsing')
@@ -38,25 +44,42 @@ def login():
     mobile.send_keys("9814214344")
     mob_submit = driver.find_element(By.XPATH, '//*[@id="logintoidentify"]')
     mob_submit.click()
+
+    time.sleep(10)
+    try:
+        enter_pass = driver.find_element(By.XPATH, '//*[@id="passwordbtn1"]')
+        enter_pass.click()
+        enter_pass_txt = driver.find_element(By.XPATH, '//*[@id="usr_password"]')
+        enter_pass_txt.click()
+        enter_pass_txt.clear()
+        enter_pass_txt.click()
+        time.sleep(2)
+        enter_pass_txt.send_keys('Indiamart@trio')
+
+        submit_btn = driver.find_element(By.XPATH, '//*[@id="signWP"]')
+        submit_btn.click()
+    except:
+        pass
     return driver
 
-def main(key_words, qnty):
-    driver = login()
-    logger.info('Log in to indiamart portal')
-    time.sleep(5)
+def main(driver, key_words, qnty):
+    # driver = login()
+    # logger.info('Log in to indiamart portal')
+    # time.sleep(5)
+    # try:
+    #     enter_pass = driver.find_element(By.XPATH, '//*[@id="passwordbtn1"]')
+    #     enter_pass.click()
+    #     enter_pass_txt = driver.find_element(By.XPATH, '//*[@id="usr_password"]')
+    #     enter_pass_txt.click()
+    #     enter_pass_txt.clear()
+    #     enter_pass_txt.click()
+    #     time.sleep(2)
+    #     enter_pass_txt.send_keys('Indiamart@trio')
 
-    enter_pass = driver.find_element(By.XPATH, '//*[@id="passwordbtn1"]')
-    enter_pass.click()
-    enter_pass_txt = driver.find_element(By.XPATH, '//*[@id="usr_password"]')
-    enter_pass_txt.click()
-    enter_pass_txt.clear()
-    enter_pass_txt.click()
-    time.sleep(2)
-    enter_pass_txt.send_keys('Indiamart@trio')
-
-    submit_btn = driver.find_element(By.XPATH, '//*[@id="signWP"]')
-    submit_btn.click()
-
+    #     submit_btn = driver.find_element(By.XPATH, '//*[@id="signWP"]')
+    #     submit_btn.click()
+    # except:
+    #     pass
     buy_leads = driver.find_element(By.XPATH, '//*[@id="lead_cen"]/a')
     buy_leads.click()
     time.sleep(10)
@@ -111,9 +134,13 @@ def main(key_words, qnty):
             leads_xpaths[lead_cur_xpath] = lead_data.split('\n')
         c = 0
         for xpath, lead in leads_xpaths.items():
+            # if xpath == '//*[@id="list2"]/div[1]':
             print(xpath)
-            if any('Quantity' in item and int(''.join(filter(str.isdigit, item))) >= qnty for item in lead) and\
+            #     break
+            if any('Quantity' in item and extract_max_integer(item) >= qnty for item in lead) and\
                     any(any(state.lower() in item.lower() for state in states) for item in lead[:4]):
+            # if any('Quantity' in item and int(''.join(filter(str.isdigit, item))) >= qnty for item in lead) and\
+            #         any(any(state.lower() in item.lower() for state in states) for item in lead[:4]):
                 logger.info(f'Lead data:\n{lead}')
                 logger.info(f'Quantity in the leads is more than {qnty-1}')
                 c+=1
@@ -168,5 +195,27 @@ def main(key_words, qnty):
     except Exception as err:
         print(str(err))
 
-def run_bot(key_words, qnty):
-    main(key_words, qnty)
+def run_bot():
+    keywords_list = ['fire resistant doors', 'lead lined doors']
+    quantities_list = [25, 25]
+    driver = login()
+    logger.info('Log in to indiamart portal')
+    time.sleep(5)
+    for i in range(1,151):
+        logger.info(f"Main cycle no: '{i}'")
+        print(f"Main cycle no: '{i}'")
+        for keywords, quantities in zip(keywords_list, quantities_list):
+            time.sleep(20)
+            main(driver=driver, key_words=keywords, qnty=quantities)
+        time.sleep(2*60)
+    try:
+        try:
+            driver.close()
+        except:
+            driver.quit()
+    except:
+        pass
+
+
+while True:
+    run_bot()
