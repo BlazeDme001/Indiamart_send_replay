@@ -1,1 +1,1 @@
-python bot_runner.py
+python main.py
