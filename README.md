@@ -22,4 +22,4 @@ To use this automation script, follow these steps:
 
 ## Usage
 ```bash
-python bot_runner.py
+python main.py
