@@ -4,7 +4,7 @@ import time
 
 if __name__ == '__main__':
     keywords_list = ['fire resistant doors', 'lead lined doors']
-    quantities_list = [25, 25]
+    quantities_list = [15, 15]
 
     while True:
         print('BOT started')
