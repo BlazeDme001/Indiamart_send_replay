@@ -197,7 +197,7 @@ def main(driver, key_words, qnty):
 
 def run_bot():
     keywords_list = ['fire resistant doors', 'lead lined doors']
-    quantities_list = [10, 3]
+    quantities_list = [5, 3]
     driver = login()
     logger.info('Log in to indiamart portal')
     time.sleep(5)
