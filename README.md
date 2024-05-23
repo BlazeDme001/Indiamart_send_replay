@@ -16,10 +16,10 @@ To use this automation script, follow these steps:
 4. Run the script and enjoy the automated experience on Indiamart.
 
 ## Dependencies
-- Python 3.12.x
+- Python 3.12
 - Selenium
 - ChromeDriver
 
 ## Usage
 ```bash
-python main.py
+python main_linux.py
