@@ -1,5 +1,6 @@
 import logging
 from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -10,10 +11,10 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import re
 
-logging.basicConfig(filename='indiamart_bot_v2.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(filename='indiamart_bot_v3.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-logger = logging.getLogger('indiamart_bot_v2')
-
+logger = logging.getLogger('indiamart_bot_v3')
+service = Service('/usr/local/bin/chromedriver')
 chrome_options = Options()
 chrome_options.add_argument('--no-sandbox')
 chrome_options.add_argument('--incognito')
@@ -33,7 +34,7 @@ def extract_max_integer(item):
 
 def login():
     logger.info('Opening safebrowsing')
-    driver = webdriver.Chrome(options=chrome_options)
+    driver = webdriver.Chrome(service=service,options=chrome_options)
     # driver.get('https://seller.indiamart.com/')
     driver.get('https://seller.indiamart.com/bltxn/?pref=relevant')
     user_id = driver.find_element(By.XPATH, '//*[@id="user_sign_in"]')
@@ -218,4 +219,8 @@ def run_bot():
 
 
 while True:
-    run_bot()
+    try:
+        run_bot()
+    except Exception as er:
+        logger.info(str(er))
+        print('Please check logger')
