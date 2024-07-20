@@ -139,7 +139,8 @@ def main(driver, key_words, qnty):
             print(xpath)
             #     break
             if any('Quantity' in item and extract_max_integer(item) >= qnty for item in lead) and\
-                    any(any(state.lower() in item.lower() for state in states) for item in lead[:4]):
+                    any(any(state.lower() in item.lower() for state in states) for item in lead[:4]) \
+                    and any(key_words in key for key in lead):
             # if any('Quantity' in item and int(''.join(filter(str.isdigit, item))) >= qnty for item in lead) and\
             #         any(any(state.lower() in item.lower() for state in states) for item in lead[:4]):
                 logger.info(f'Lead data:\n{lead}')
