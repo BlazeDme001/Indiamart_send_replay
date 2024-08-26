@@ -140,7 +140,7 @@ def main(driver, key_words, qnty):
             #     break
             if any('Quantity' in item and extract_max_integer(item) >= qnty for item in lead) and\
                     any(any(state.lower() in item.lower() for state in states) for item in lead[:4]) \
-                    and any(key_words in key for key in lead):
+                    and any(key_words.lower() in key.lower() for key in lead):
             # if any('Quantity' in item and int(''.join(filter(str.isdigit, item))) >= qnty for item in lead) and\
             #         any(any(state.lower() in item.lower() for state in states) for item in lead[:4]):
                 logger.info(f'Lead data:\n{lead}')
@@ -211,9 +211,9 @@ def run_bot():
         logger.info(f"Main cycle no: '{i}'")
         print(f"Main cycle no: '{i}'")
         for keywords, quantities in zip(keywords_list, quantities_list):
-            time.sleep(20)
+            time.sleep(10)
             main(driver=driver, key_words=keywords, qnty=quantities)
-        time.sleep(2*60)
+        time.sleep(60)
     try:
         try:
             driver.close()
