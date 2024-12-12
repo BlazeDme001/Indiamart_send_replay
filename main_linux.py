@@ -13,7 +13,7 @@ import re
 
 logging.basicConfig(filename='indiamart_bot_v4.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-logger = logging.getLogger('indiamart_bot_v3')
+logger = logging.getLogger('indiamart_bot_v4')
 service = Service('/usr/local/bin/chromedriver')
 chrome_options = Options()
 chrome_options.add_argument('--no-sandbox')
@@ -64,23 +64,6 @@ def login():
     return driver
 
 def main(driver, key_words, qnty):
-    # driver = login()
-    # logger.info('Log in to indiamart portal')
-    # time.sleep(5)
-    # try:
-    #     enter_pass = driver.find_element(By.XPATH, '//*[@id="passwordbtn1"]')
-    #     enter_pass.click()
-    #     enter_pass_txt = driver.find_element(By.XPATH, '//*[@id="usr_password"]')
-    #     enter_pass_txt.click()
-    #     enter_pass_txt.clear()
-    #     enter_pass_txt.click()
-    #     time.sleep(2)
-    #     enter_pass_txt.send_keys('Indiamart@trio')
-
-    #     submit_btn = driver.find_element(By.XPATH, '//*[@id="signWP"]')
-    #     submit_btn.click()
-    # except:
-    #     pass
     buy_leads = driver.find_element(By.XPATH, '//*[@id="lead_cen"]/a')
     buy_leads.click()
     time.sleep(10)
@@ -135,18 +118,34 @@ def main(driver, key_words, qnty):
             leads_xpaths[lead_cur_xpath] = lead_data.split('\n')
         c = 0
         for xpath, lead in leads_xpaths.items():
-            # if xpath == '//*[@id="list2"]/div[1]':
             print(xpath)
-            #     break
+
+            new_key_dict = {
+                'fire resistant doors': ['Fire Doors','Fire Resistant Metal Door','Fire Emergency Door','Hours Fire Resistant Doors',
+                                         'GI Fire Proof Resistant Door','Color Coated','Fire Resistant Safety Door','Fire Shaft Door',
+                                         'Emergency Exit Door','Fire Protection Door'],
+                'lead lined doors':['Lead Lined Door','Hospital Operation Theater Door','Hospital MS Door','Xray room Door',
+                                    'Hospital OT Doors'],
+                'ot doors':['Lead Lined Door','Hospital Operation Theater Door','Hospital MS Door','Xray room Door',
+                            'Hospital OT Doors'],
+                'aluminium coving':['aluminium coving'],
+                'modular cleanroom doors':['MS Powder Coated Fire Proof Door','Powder Coated Clean Room Service',
+                                           'Clean Room Partition','Modular Cleanroom Door','Cleanroom Penal',
+                                           'Gi Modular Clean Room Door'],
+                'pvc coving':['pvc coving'],
+                'emergency exit doors':['emergency exit doors'],
+                'drop seal':['drop seal']
+            }
+
             if any('Quantity' in item and extract_max_integer(item) >= qnty for item in lead) and\
                     any(any(state.lower() in item.lower() for state in states) for item in lead[:4]) \
-                    and any(key_words.lower() in key.lower() for key in lead):
-            # if any('Quantity' in item and int(''.join(filter(str.isdigit, item))) >= qnty for item in lead) and\
-            #         any(any(state.lower() in item.lower() for state in states) for item in lead[:4]):
+                    and any(any(word.lower() in key.lower() for word in new_key_dict[key_words]) for key in lead):
+            # if any('Quantity' in item and extract_max_integer(item) >= qnty for item in lead) and\
+            #         any(any(state.lower() in item.lower() for state in states) for item in lead[:4]) \
+            #         and any(key_words.lower() in key.lower() for key in lead):
                 logger.info(f'Lead data:\n{lead}')
                 logger.info(f'Quantity in the leads is more than {qnty-1}')
                 c+=1
-                # if (c<16 and key_words == 'fire resistant doors') or (key_words == 'lead lined doors' and c<6):
                 try:
                     cont_xpath = xpath.replace('/div[1]', '')
                     cont_buyer_xpath = f'{cont_xpath}/div[3]/div[2]/div/span'
@@ -171,7 +170,6 @@ def main(driver, key_words, qnty):
                     send_reply.click()
                     logger.info('Clicked on send reply')
                     try:
-                        # outer_popup = WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.ID, '//*[@id="sourcediv11"]')))
                         element_or_outer_popup = driver.find_element(By.XPATH, '//*[@id="cls_btn"]')
                         element_or_outer_popup.click()
                         logger.info('Closeing the popup')
