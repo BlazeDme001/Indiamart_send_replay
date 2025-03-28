@@ -13,9 +13,9 @@ import re
 
 logging.basicConfig(filename='indiamart_bot_v6_1.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-logger = logging.getLogger('indiamart_bot_v5')
-# service = Service('/usr/local/bin/chromedriver')
-service = Service(r"C:\Chrome Driver\chromedriver-win64\chromedriver.exe")
+logger = logging.getLogger('indiamart_bot_v6_1')
+service = Service('/usr/local/bin/chromedriver')
+# service = Service(r"C:\Chrome Driver\chromedriver-win64\chromedriver.exe")
 chrome_options = Options()
 chrome_options.add_argument('--no-sandbox')
 chrome_options.add_argument('--incognito')
