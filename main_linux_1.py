@@ -63,6 +63,8 @@ def login():
     try:
         enter_pass = driver.find_element(By.XPATH, '//*[@id="passwordbtn1"]')
         enter_pass.click()
+        enter_pass_btn = driver.find_element(By.XPATH, '//*[@id="passwordbtn1"]')
+        enter_pass_btn.click()
         enter_pass_txt = driver.find_element(By.XPATH, '//*[@id="usr_password"]')
         enter_pass_txt.click()
         enter_pass_txt.clear()
@@ -101,6 +103,14 @@ def main(driver, key_words, qnty):
 
     buy_leads = driver.find_element(By.XPATH, '//*[@id="lead_cen"]/a')
     buy_leads.click()
+
+    # Changes of new code: Start: ======================================
+    try:
+        recent_leads = driver.find_element(By.XPATH, "//*[text()='Recent Leads']")
+        recent_leads.click()
+    except:
+        pass
+    # Changes of new code: End: ======================================
 
     states = ["andhra pradesh", "arunachal pradesh", "assam", "bihar", "chhattisgarh", "goa", "gujarat", "haryana", "himachal pradesh", "jharkhand", "karnataka", "kerala", "madhya pradesh", "maharashtra", "manipur", "meghalaya", "mizoram", "nagaland", "odisha", "punjab", "rajasthan", "sikkim", "tamil nadu", "telangana", "tripura", "uttar pradesh", "uttarakhand", "west bengal", "andaman and nicobar islands", "chandigarh", "dadra and nagar haveli and daman and diu", "delhi", "jammu and kashmir", "ladakh", "lakshadweep", "puducherry" ]
 
