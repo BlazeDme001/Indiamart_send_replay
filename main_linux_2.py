@@ -49,24 +49,27 @@ def login():
 
 # Changes of new code: Start: ======================================
     try:
+        time.sleep(5)
         sec_mob = driver.find_element(By.XPATH, '//*[@id="mobNo"]')
         sec_mob.click()
+        time.sleep(2)
         sec_mob.clear()
         sec_mob.send_keys("9814214344")
         login_btn_mob = driver.find_element(By.XPATH, '//button[@class="login_btn"]')
         login_btn_mob.click()
-    except:
+    except Exception as err:
+        print(f'Error is : {str(err)}')
         pass
 # Changes of new code: End: ======================================
 
-    time.sleep(10)
+    time.sleep(5)
     try:
         enter_pass = driver.find_element(By.XPATH, '//*[@id="passwordbtn1"]')
         enter_pass.click()
-        enter_pass_btn = driver.find_element(By.XPATH, '//*[@id="passwordbtn1"]')
-        enter_pass_btn.click()
+        time.sleep(2)
         enter_pass_txt = driver.find_element(By.XPATH, '//*[@id="usr_password"]')
         enter_pass_txt.click()
+        time.sleep(2)
         enter_pass_txt.clear()
         enter_pass_txt.click()
         time.sleep(2)
@@ -74,7 +77,8 @@ def login():
 
         submit_btn = driver.find_element(By.XPATH, '//*[@id="signWP"]')
         submit_btn.click()
-    except:
+    except Exception as err:
+        print(f'Error2 is : {str(err)}')
         pass
     return driver
 
