@@ -10,6 +10,8 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import re
+from difflib import SequenceMatcher
+
 
 logging.basicConfig(filename='indiamart_bot_v6_1.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -32,6 +34,11 @@ def extract_max_integer(item):
         return max(map(int, digits))
     else:
         return 0
+
+
+def is_similar(a, b, threshold=0.8):
+    return SequenceMatcher(None, a.lower(), b.lower()).ratio() >= threshold
+
 
 def login():
     logger.info('Opening safebrowsing')
@@ -171,9 +178,10 @@ def main(driver, key_words, qnty):
                 'drop seal':['drop seal']
             }
 
-            if any('Quantity' in item and extract_max_integer(item) >= qnty for item in lead) and\
-                    any(any(state.lower() in item.lower() for state in states) for item in lead[:4]) \
-                    and any(any(word.lower() in key.lower() for word in new_key_dict[key_words]) for key in lead):
+            if any('Quantity' in item and extract_max_integer(item) >= qnty for item in lead) and \
+                any(any(state.lower() in item.lower() for state in states) for item in lead[:4]) and \
+                any(any(is_similar(key, word) for word in new_key_dict.get(key_words, [])) for key in lead):
+
                 logger.info(f'Lead data:\n{lead}')
                 logger.info(f'Quantity in the leads is more than {qnty-1}')
                 c+=1
