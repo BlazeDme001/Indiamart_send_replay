@@ -207,6 +207,7 @@ def main(driver, key_words, qnty):
                     logger.info(f"Lead XPATH: {xpath} and contact XPATH: {cont_buyer_xpath}")
 
                 try:
+                    WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.XPATH, "//*[text()='Send Reply']")))
                     send_reply = driver.find_element(By.XPATH, "//*[text()='Send Reply']")
                     send_reply.click()
                     logger.info('Clicked on send reply')

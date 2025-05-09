@@ -16,8 +16,8 @@ from difflib import SequenceMatcher
 logging.basicConfig(filename='indiamart_bot_v6_1.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 logger = logging.getLogger('indiamart_bot_v6_1')
-service = Service('/home/ubuntu/chromedriver/chromedriver-linux64/chromedriver')
-# service = Service(r"C:\Chrome Driver\chromedriver-win64\chromedriver.exe")
+# service = Service('/home/ubuntu/chromedriver/chromedriver-linux64/chromedriver')
+service = Service(r"C:\Chrome Driver\chromedriver-win64\chromedriver.exe")
 chrome_options = Options()
 chrome_options.add_argument('--no-sandbox')
 chrome_options.add_argument('--incognito')
@@ -205,6 +205,7 @@ def main(driver, key_words, qnty):
                     logger.info(f"Lead XPATH: {xpath} and contact XPATH: {cont_buyer_xpath}")
 
                 try:
+                    WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.XPATH, "//*[text()='Send Reply']")))
                     send_reply = driver.find_element(By.XPATH, "//*[text()='Send Reply']")
                     send_reply.click()
                     logger.info('Clicked on send reply')
