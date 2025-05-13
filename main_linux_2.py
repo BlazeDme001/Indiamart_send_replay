@@ -177,9 +177,6 @@ def main(driver, key_words, qnty):
                 'drop seal':['drop seal']
             }
 
-            # if any('Quantity' in item and extract_max_integer(item) >= qnty for item in lead) and\
-            #         any(any(state.lower() in item.lower() for state in states) for item in lead[:4]) \
-            #         and any(any(word.lower() in key.lower() for word in new_key_dict[key_words]) for key in lead):
             if any('Quantity' in item and extract_max_integer(item) >= qnty for item in lead) and \
                 any(any(state.lower() in item.lower() for state in states) for item in lead[:4]) and \
                 any(any(is_similar(key, word) for word in new_key_dict.get(key_words, [])) for key in lead):
@@ -191,9 +188,13 @@ def main(driver, key_words, qnty):
                     cont_xpath = xpath.replace('/div[1]', '')
                     cont_buyer_xpath = f'{cont_xpath}/div[3]/div[2]/div/span'
                     contact_buyer = driver.find_element(By.XPATH, cont_buyer_xpath)
-                    actions = ActionChains(driver)
-                    actions.move_to_element(driver.find_element(By.XPATH, cont_buyer_xpath)).perform()
+                    try:
+                        actions = ActionChains(driver)
+                        actions.move_to_element(driver.find_element(By.XPATH, cont_buyer_xpath)).perform()
+                    except:
+                        pass
                     driver.execute_script("window.scrollBy(0, 200);")
+                    time.sleep(5)
                     contact_buyer.click()
                     logger.info(f"Lead XPATH: {xpath} and contact XPATH: {cont_buyer_xpath}")
                 except:
