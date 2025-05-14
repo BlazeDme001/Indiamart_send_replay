@@ -15,8 +15,8 @@ from difflib import SequenceMatcher
 logging.basicConfig(filename='indiamart_bot_v6_2.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 logger = logging.getLogger('indiamart_bot_v6_2')
-# service = Service('/home/ubuntu/chromedriver/chromedriver-linux64/chromedriver')
-service = Service(r"C:\Chrome Driver\chromedriver-win64\chromedriver.exe")
+service = Service('/home/ubuntu/chromedriver/chromedriver-linux64/chromedriver')
+# service = Service(r"C:\Chrome Driver\chromedriver-win64\chromedriver.exe")
 chrome_options = Options()
 chrome_options.add_argument('--no-sandbox')
 chrome_options.add_argument('--incognito')
